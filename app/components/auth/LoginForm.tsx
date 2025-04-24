@@ -2,17 +2,72 @@
 
 import React, { useState } from 'react';
 import { Button } from '../ui/Button';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { mockUsers } from '@/app/data/mockData';
+
+const UserTypeCard = ({ 
+  title, 
+  email, 
+  icon, 
+  onClick 
+}: { 
+  title: string; 
+  email: string; 
+  icon: string; 
+  onClick: () => void 
+}) => {
+  return (
+    <div 
+      className="border rounded-lg p-3 flex flex-col items-center gap-2 transition-all hover:shadow-md hover:bg-blue-50/50 cursor-pointer bg-white dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700/50"
+      onClick={onClick}
+    >
+      <div className="w-12 h-12 bg-blue-600 dark:bg-blue-500 rounded-full flex items-center justify-center text-white text-lg">
+        {icon}
+      </div>
+      <div className="font-semibold text-center text-gray-800 dark:text-gray-200">{title}</div>
+      <div className="text-xs text-gray-500 dark:text-gray-400">{email}</div>
+    </div>
+  );
+};
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
   
   const router = useRouter();
+  
+  const handleLoginWithUserType = (userEmail: string) => {
+    setIsLoading(true);
+    
+    // Simulate authentication delay
+    setTimeout(() => {
+      // Find the user based on email
+      const user = mockUsers.find(user => user.email.toLowerCase() === userEmail.toLowerCase());
+      
+      if (user) {
+        // In a real app, you would set user in context/store
+        console.log('User authenticated:', user);
+        
+        // Redirect based on role
+        if (user.role === 'coach') {
+          router.push('/dashboard');
+        } else if (user.role === 'player') {
+          router.push('/dashboard');
+        } else if (user.role === 'medical') {
+          router.push('/medical');
+        } else if (user.role === 'admin') {
+          router.push('/dashboard');
+        }
+      } else {
+        setError('حدث خطأ في تسجيل الدخول');
+      }
+      
+      setIsLoading(false);
+    }, 1000);
+  };
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,131 +102,127 @@ const LoginForm = () => {
   };
   
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 py-12 px-4 sm:px-6 lg:px-8" dir="rtl">
-      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-md">
-        <div>
-          <div className="w-20 h-20 mx-auto rounded-full bg-blue-600 flex items-center justify-center">
-            <span className="text-white text-2xl font-bold">FC</span>
-          </div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            تسجيل الدخول
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            مرحبًا بك في منصة مساعد المدرب والفريق
-          </p>
-        </div>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900" dir="rtl">
+      <div className="max-w-md w-full space-y-4 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+        <h2 className="text-center text-xl font-bold text-gray-900 dark:text-white">
+          تسجيل الدخول
+        </h2>
         
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          {error && (
-            <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded">
-              <div className="flex">
-                <div className="flex-shrink-0">
-                  <svg className="h-5 w-5 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <div className="mr-3">
-                  <p className="text-sm text-red-700">
-                    {error}
-                  </p>
-                </div>
+        {showLogin ? (
+          <form className="space-y-4" onSubmit={handleSubmit}>
+            {error && (
+              <div className="bg-red-50 dark:bg-red-900/20 border-r-4 border-red-500 p-3 rounded-md">
+                <p className="text-sm text-red-700 dark:text-red-400">{error}</p>
+              </div>
+            )}
+            
+            <div className="rounded-md shadow-sm -space-y-px">
+              <div>
+                <label htmlFor="email-address" className="sr-only">
+                  البريد الإلكتروني
+                </label>
+                <input
+                  id="email-address"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white dark:bg-gray-700 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 text-sm"
+                  placeholder="البريد الإلكتروني"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+              <div>
+                <label htmlFor="password" className="sr-only">
+                  كلمة المرور
+                </label>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="current-password"
+                  required
+                  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white dark:bg-gray-700 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 text-sm"
+                  placeholder="كلمة المرور"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
               </div>
             </div>
-          )}
-          
-          <div className="rounded-md shadow-sm -space-y-px">
-            <div>
-              <label htmlFor="email-address" className="sr-only">
-                البريد الإلكتروني
-              </label>
-              <input
-                id="email-address"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder="البريد الإلكتروني"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            <div>
-              <label htmlFor="password" className="sr-only">
-                كلمة المرور
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder="كلمة المرور"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-          </div>
 
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <input
-                id="remember-me"
-                name="remember-me"
-                type="checkbox"
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-              />
-              <label htmlFor="remember-me" className="mr-2 block text-sm text-gray-900">
-                تذكرني
-              </label>
-            </div>
-
-            <div className="text-sm">
-              <Link href="/forgot-password" className="font-medium text-blue-600 hover:text-blue-500">
-                نسيت كلمة المرور؟
-              </Link>
-            </div>
-          </div>
-
-          <div>
             <Button
               type="submit"
               fullWidth
               isLoading={isLoading}
+              className="bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600"
             >
               تسجيل الدخول
             </Button>
-          </div>
-          
-          <div className="text-center text-sm">
-            <p className="text-gray-600">
-              تستطيع تسجيل الدخول باستخدام بيانات المستخدمين التجريبية:
-            </p>
-            <div className="mt-2 grid grid-cols-2 gap-2 text-xs">
-              <div className="border rounded p-2">
-                <div className="font-semibold">المدرب</div>
-                <div>ahmed.hassan@team.com</div>
-                <div>كلمة المرور: 123456</div>
-              </div>
-              <div className="border rounded p-2">
-                <div className="font-semibold">اللاعب</div>
-                <div>mo.salah@team.com</div>
-                <div>كلمة المرور: 123456</div>
-              </div>
-              <div className="border rounded p-2">
-                <div className="font-semibold">الطبيب</div>
-                <div>dr.khalid@team.com</div>
-                <div>كلمة المرور: 123456</div>
-              </div>
-              <div className="border rounded p-2">
-                <div className="font-semibold">الإدارة</div>
-                <div>amr.elganainy@team.com</div>
-                <div>كلمة المرور: 123456</div>
-              </div>
+            
+            <div className="text-center">
+              <button 
+                type="button" 
+                className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm font-medium"
+                onClick={() => setShowLogin(false)}
+              >
+                الدخول السريع كمستخدم
+              </button>
             </div>
+          </form>
+        ) : (
+          <div className="space-y-4">
+            {error && (
+              <div className="bg-red-50 dark:bg-red-900/20 border-r-4 border-red-500 p-3 rounded-md">
+                <p className="text-sm text-red-700 dark:text-red-400">{error}</p>
+              </div>
+            )}
+            
+            <div className="grid grid-cols-2 gap-3">
+              <UserTypeCard
+                title="المدرب"
+                email="coach@example.com"
+                icon="👨‍💼"
+                onClick={() => handleLoginWithUserType('coach@example.com')}
+              />
+              <UserTypeCard
+                title="اللاعب"
+                email="ahmed@example.com"
+                icon="⚽"
+                onClick={() => handleLoginWithUserType('ahmed@example.com')}
+              />
+              <UserTypeCard
+                title="الطبيب"
+                email="doctor@example.com"
+                icon="👨‍⚕️"
+                onClick={() => handleLoginWithUserType('doctor@example.com')}
+              />
+              <UserTypeCard
+                title="الإدارة"
+                email="admin@example.com"
+                icon="👑"
+                onClick={() => handleLoginWithUserType('admin@example.com')}
+              />
+            </div>
+            
+            <div className="text-center">
+              <button 
+                type="button" 
+                className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm font-medium"
+                onClick={() => setShowLogin(true)}
+              >
+                تسجيل الدخول باستخدام البريد الإلكتروني
+              </button>
+            </div>
+            
+            {isLoading && (
+              <div className="text-center">
+                <div className="inline-block animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-blue-600 dark:border-blue-400"></div>
+                <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">جاري تسجيل الدخول...</p>
+              </div>
+            )}
           </div>
-        </form>
+        )}
       </div>
     </div>
   );

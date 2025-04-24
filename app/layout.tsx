@@ -1,6 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Tajawal } from 'next/font/google';
+import { ThemeProvider } from '@/components/theme-provider';
 
 // Initialize Tajawal font with Arabic subset
 const tajawal = Tajawal({ 
@@ -20,12 +21,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ar" dir="rtl" className="scroll-smooth">
+    <html lang="ar" dir="rtl" className="scroll-smooth" suppressHydrationWarning>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
-      <body className={`${tajawal.variable} font-sans bg-gray-50 text-gray-900 min-h-screen`}>
-        {children}
+      <body className={`${tajawal.variable} font-sans antialiased min-h-screen`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
