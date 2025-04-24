@@ -1,28 +1,19 @@
 "use client"
 
 import * as React from "react"
-import { ChevronLeft, ChevronRight } from "lucide-react"
 import { DayPicker } from "react-day-picker"
-import { ar, enUS } from 'date-fns/locale'
+import { ChevronLeft, ChevronRight } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
-export type CalendarProps = React.ComponentProps<typeof DayPicker>
+export type SimpleCalendarProps = React.ComponentProps<typeof DayPicker>
 
-export function Calendar({
+export function SimpleCalendar({
   className,
   classNames,
   showOutsideDays = true,
-  locale = "en",
   ...props
-}: CalendarProps) {
-  const localeMap = {
-    en: enUS,
-    ar: ar,
-  }
-
-  const dir = locale === "ar" ? "rtl" : "ltr"
-
+}: SimpleCalendarProps) {
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
@@ -47,7 +38,6 @@ export function Calendar({
         day: cn(
           "h-9 w-9 p-0 font-normal aria-selected:opacity-100 hover:bg-accent hover:text-accent-foreground"
         ),
-        day_range_end: "day-range-end",
         day_selected:
           "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground",
         day_today: "bg-accent text-accent-foreground",
@@ -59,13 +49,7 @@ export function Calendar({
         day_hidden: "invisible",
         ...classNames,
       }}
-      components={{
-        IconLeft: () => <ChevronLeft className="h-4 w-4" />,
-        IconRight: () => <ChevronRight className="h-4 w-4" />,
-      }}
-      dir={dir}
-      locale={localeMap[locale as keyof typeof localeMap]}
       {...props}
     />
   )
-}
+} 

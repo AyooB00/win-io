@@ -53,9 +53,9 @@ const ChatView: React.FC<ChatViewProps> = ({
         <h2 className="text-xl font-semibold">{conversationName}</h2>
       </div>
       
-      <div className="flex-1 overflow-y-auto p-4">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {Object.entries(groupedMessages).map(([dateKey, dateMessages]) => (
-          <div key={dateKey}>
+          <div key={dateKey} className="space-y-4">
             <div className="flex items-center justify-center my-4">
               <div className="text-xs text-gray-500 bg-gray-100 dark:bg-gray-700 rounded-full px-3 py-1">
                 {formatChatDate(dateMessages[0].timestamp)}

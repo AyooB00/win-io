@@ -5,15 +5,25 @@ import { Button } from '../ui/Button';
 import { useRouter } from 'next/navigation';
 import { mockUsers } from '@/app/data/mockData';
 
+// Map emails to roles
+const emailToRoleMap = {
+  'coach@example.com': 'coach',
+  'ahmed@example.com': 'player',
+  'doctor@example.com': 'medical',
+  'admin@example.com': 'admin',
+};
+
 const UserTypeCard = ({ 
   title, 
   email, 
   icon, 
+  role,
   onClick 
 }: { 
   title: string; 
   email: string; 
-  icon: string; 
+  icon: string;
+  role: string;
   onClick: () => void 
 }) => {
   return (
@@ -42,6 +52,9 @@ const LoginForm = () => {
   const handleLoginWithUserType = (userEmail: string) => {
     setIsLoading(true);
     
+    // Get the user role based on email
+    const userRole = emailToRoleMap[userEmail as keyof typeof emailToRoleMap] || 'coach';
+    
     // Simulate authentication delay
     setTimeout(() => {
       // Find the user based on email
@@ -51,16 +64,8 @@ const LoginForm = () => {
         // In a real app, you would set user in context/store
         console.log('User authenticated:', user);
         
-        // Redirect based on role
-        if (user.role === 'coach') {
-          router.push('/dashboard');
-        } else if (user.role === 'player') {
-          router.push('/dashboard');
-        } else if (user.role === 'medical') {
-          router.push('/medical');
-        } else if (user.role === 'admin') {
-          router.push('/dashboard');
-        }
+        // Redirect to dashboard with role parameter
+        router.push(`/dashboard?role=${userRole}`);
       } else {
         setError('حدث خطأ في تسجيل الدخول');
       }
@@ -83,16 +88,11 @@ const LoginForm = () => {
         // In a real app, you would set user in context/store
         console.log('User authenticated:', user);
         
-        // Redirect based on role
-        if (user.role === 'coach') {
-          router.push('/dashboard');
-        } else if (user.role === 'player') {
-          router.push('/dashboard');
-        } else if (user.role === 'medical') {
-          router.push('/medical');
-        } else if (user.role === 'admin') {
-          router.push('/dashboard');
-        }
+        // Get the user role from the user object or email map
+        const userRole = user.role || emailToRoleMap[email as keyof typeof emailToRoleMap] || 'coach';
+        
+        // Redirect to dashboard with role parameter
+        router.push(`/dashboard?role=${userRole}`);
       } else {
         setError('البريد الإلكتروني أو كلمة المرور غير صحيحة');
       }
@@ -183,24 +183,28 @@ const LoginForm = () => {
                 title="المدرب"
                 email="coach@example.com"
                 icon="👨‍💼"
+                role="coach"
                 onClick={() => handleLoginWithUserType('coach@example.com')}
               />
               <UserTypeCard
                 title="اللاعب"
                 email="ahmed@example.com"
                 icon="⚽"
+                role="player"
                 onClick={() => handleLoginWithUserType('ahmed@example.com')}
               />
               <UserTypeCard
                 title="الطبيب"
                 email="doctor@example.com"
                 icon="👨‍⚕️"
+                role="medical"
                 onClick={() => handleLoginWithUserType('doctor@example.com')}
               />
               <UserTypeCard
                 title="الإدارة"
                 email="admin@example.com"
                 icon="👑"
+                role="admin"
                 onClick={() => handleLoginWithUserType('admin@example.com')}
               />
             </div>

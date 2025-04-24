@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { User } from '@/app/types';
+import { useRouter } from 'next/navigation';
 
 interface HeaderProps {
   user: User;
@@ -12,6 +13,7 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({ user }) => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const router = useRouter();
 
   // Mock notifications
   const notifications = [
@@ -48,6 +50,20 @@ export const Header: React.FC<HeaderProps> = ({ user }) => {
   const toggleNotifications = () => {
     setShowNotifications(!showNotifications);
     if (showProfileMenu) setShowProfileMenu(false);
+  };
+
+  // Logout handler function
+  const handleLogout = async () => {
+    console.log("Attempting logout...");
+    // TODO: Replace with actual logout logic (e.g., call API, clear context/cookies)
+    // Example: await authContext.logout(); 
+    
+    // Clear any client-side session info if needed
+    // Example: localStorage.removeItem('authToken');
+
+    // Redirect to the main page
+    router.push('/'); 
+    setShowProfileMenu(false); // Close the menu after logout
   };
 
   return (
@@ -184,6 +200,7 @@ export const Header: React.FC<HeaderProps> = ({ user }) => {
                 </Link>
                 <div className="border-t"></div>
                 <button
+                  onClick={handleLogout}
                   className="block w-full text-right px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
                 >
                   تسجيل الخروج
