@@ -5,6 +5,7 @@ All notable changes to the WIN IO project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- **Added comprehensive match analysis page for Al-Hilal vs. Al-Ittihad with detailed statistics, team information, and tactical recommendations**
 - **README updated with comprehensive project description in both English and Arabic**
 - **Added workflow diagram to documentation**
 - Initial application interface and pages
