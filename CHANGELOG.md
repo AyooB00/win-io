@@ -1,6 +1,21 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
+All notable changes to the WIN IO project will be documented in this file.
+
+## [Unreleased]
+
+### Added
+- **README updated with comprehensive project description in both English and Arabic**
+- **Added workflow diagram to documentation**
+- Initial application interface and pages
+- Basic AI feature for data retrieval and processing
+
+### Planned
+- Enhanced data processing capabilities
+- Improved user interface
+- Additional AI features integration
+- Database optimization
+- Mobile responsiveness improvements
 
 ## [Unreleased]
 
