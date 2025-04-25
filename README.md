@@ -2,9 +2,14 @@
 
 ![WIN IO Workflow](/public/images/winio-flow.png)
 
-https://drive.google.com/file/d/1g2OpcodOn28FcntUGN9-564QcdrG1kmn/view?usp=sharing
+<iframe 
+  src="https://drive.google.com/file/d/1g2OpcodOn28FcntUGN9-564QcdrG1kmn/preview" 
+  width="100%" 
+  height="480" 
+  allow="autoplay"
+></iframe>
 
-<iframe src="https://drive.google.com/file/d/1g2OpcodOn28FcntUGN9-564QcdrG1kmn/view?usp=sharing" width="640" height="480" allow="autoplay" allowfullscreen></iframe>
+https://drive.google.com/file/d/1g2OpcodOn28FcntUGN9-564QcdrG1kmn/view?usp=sharing
 
 
 ![WIN IO demo](/public/images/a0.png)
