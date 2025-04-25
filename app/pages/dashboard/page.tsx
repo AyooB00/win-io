@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import DashboardLayout from '@/app/components/layout/DashboardLayout';
+import { DashboardLayout } from '@/app/components/layout/DashboardLayout';
 import StatCard from '@/app/components/dashboard/StatCard';
 import UpcomingMatches from '@/app/components/dashboard/UpcomingMatches';
 import { Card } from '@/app/components/ui/Card';

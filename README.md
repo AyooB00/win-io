@@ -4,6 +4,11 @@
 
 http://192.168.30.96:3000
 
+![WIN IO demo](/public/images/a0.png)
+![WIN IO demo](/public/images/a1.png)
+![WIN IO demo](/public/images/a2.png)
+
+
 ميزات تحليل البيانات مشر،ع باكند منفصل تم رفعه سابقا تاخرنا في دمج الباكند مع الفررونت اند بسبب ضيق الوقت.
 
 ## نظرة عامة

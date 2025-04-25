@@ -70,8 +70,8 @@ export const UpcomingMatches: React.FC<UpcomingMatchesProps> = ({ matches }) => 
           <p className="text-gray-500 text-center py-4">لا توجد مباريات قادمة</p>
         ) : (
           sortedMatches.map((match) => {
-            const homeTeam = getTeamById(match.homeTeamId);
-            const awayTeam = getTeamById(match.awayTeamId);
+            const homeTeam = match.homeTeam;
+            const awayTeam = match.awayTeam;
             const { date, time } = formatMatchDate(match.date);
             
             return (
